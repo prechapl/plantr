@@ -1,0 +1,15 @@
+{
+  "name": "plantr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "DATABASE_URL=postgres://localhost:5432/plantr nodemon seed.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^7.8.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.42.0"
+  }
+}
