@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const conn = new Sequelize (process.env.DATABASE_URL);
+const conn = new Sequelize(process.env.DATABASE_URL);
 
 const Gardener = conn.define('gardener', {
     name: {
@@ -15,7 +15,7 @@ const Plot = conn.define('plot', {
 const Vegetable = conn.define('vegetable', {
     name: Sequelize.STRING,
     color: Sequelize.STRING,
-    planted_on: {
+    plantedOn: {
         type: Sequelize.DATEONLY,
         validate: {
             isDate: true
@@ -23,17 +23,26 @@ const Vegetable = conn.define('vegetable', {
     }
 });
 
+
 //prof says a plot a could belongs to gardener, would need to refactor a bit
 
 Plot.belongsTo(Gardener);
 Gardener.hasOne(Plot);
+
+//many to many ; creates a new join table with 'through' option
 Vegetable.belongsToMany(Plot, {through: 'vegetable_plot'});
 Plot.belongsToMany(Vegetable, {through: 'vegetable_plot'});
+
+//this puts foriegn key on column on Gardeners table
 Gardener.belongsTo(Vegetable, {as: 'favorite_vegetable'});
+
+// this is how you access the join table
+const PlotVegetable = conn.model('vegetable_plot')
 
 module.exports = {
     conn,
     Gardener,
     Plot,
-    Vegetable
+    Vegetable,
+    PlotVegetable
 }
